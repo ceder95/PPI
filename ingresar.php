@@ -61,7 +61,7 @@
                             if($rowb = mysqli_fetch_array($res2)){ 
                                     $_SESSION["usuario"]=$usr;
                                     $_SESSION["pwd"]=$pass;
-                                    header("Location:tienda.php?busqueda=");
+                                    header("Location:tienda.php?busqueda=&categoria=0&marca=0");
                             }else{
                                 $err="Contraseña incorrecta";
                             }
