@@ -1,10 +1,11 @@
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MiTienda - Contacto </title>
+    <title>MiTienda - Actualizar Categoria</title>
     
     <!-- Google Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
@@ -29,13 +30,28 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body>       
+  <body>
     <div class="site-branding-area">
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
                     <div class="logo">
                         <h1><a href="inicio.html">Mi<span>Tienda</span></a></h1>
+                    </div>
+                </div>
+                
+                <div class="col-sm-6">
+                    <div class="shopping-item">
+                        <a href="usuario.php"><span class="cart-amunt">
+                             <?php
+                            if(isset($_SESSION["usuario"])){
+                                echo $_SESSION['usuario'];
+                            }
+                            else{
+                                header("Location:ingresar.php");
+                            }
+                            ?>
+                        </span></a>
                     </div>
                 </div>
             </div>
@@ -54,14 +70,15 @@
                     </button>
                 </div> 
                 <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
+                   <ul class="nav navbar-nav">
                         <li><a href="inicio.html">Inicio</a></li>
-                        <li><a href="tienda.php??busqueda=&categoria=0&marca=0">Tienda</a></li>
-                        <li><a href="carrito.php">Carrito</a></li>
-                        <li><a href="ingresar.php">Ingresar</a></li>
-                        <li><a href="registro.php">Registrarse</a></li>
-                        <li class="active"><a href="contacto.html">Contacto</a></li>
+                        <li><a href="productos.php">Tienda</a></li>
+                        <li><a href="compras.php">Compras</a></li>
+                        <li><a href="marcas.php">Marcas</a></li>
+                        <li class="active"><a href="categorias.php">Categorias</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
                     </ul>
+                    
                 </div>  
             </div>
         </div>
@@ -72,37 +89,52 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="product-bit-title text-center">
-                        <h2>Contacto</h2>
+                        <h2>Categoria</h2>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    
     <div class="single-product-area">
         <div class="zigzag-bottom"></div>
         <div class="container">
-            <div class="row aligncenter">
-                <div class="col-md-6  text-center">
-                    <h2>Correos</h2>
-                    <a href="mailto:reportes@mitienda.com">reportes@mitienda.com</a> <br/>
-                    <a href="mailto:quejas_sugerencias@mitienda.com">quejas_sugerencias@mitienda.com</a>
-                </div>
-                <div class="col-md-6  text-center">
-                    <h2>Teléfonos</h2> 
-                    <p>(55) 53 23 47 11</p>
-                    <p> 01 800 840 36 32</p>
-                </div>
-                <div class="col-md-10 text-center aligncenter" style="margin: 10px 10%;">
-                <h2>Términos y condiciones </h2>
-                <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris aliquam leo quis massa condimentum porttitor. Aliquam erat volutpat. Morbi elementum felis non justo tristique feugiat. Phasellus ipsum lorem, accumsan vel rutrum vitae, tincidunt nec dolor. Curabitur vel eros non justo volutpat varius. Aliquam facilisis vulputate massa, sed egestas mi vulputate eu. Nunc mi sem, vehicula in rhoncus quis, pharetra et est. Sed efficitur semper elit non rhoncus. Aliquam erat volutpat. Morbi id lectus mauris. Ut sed ornare est. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus suscipit eu sem at semper. Duis auctor ligula in mi varius finibus. Etiam vel pharetra turpis. <br/>
-                In hac habitasse platea dictumst. Duis volutpat libero neque, ac pellentesque magna cursus vel. Aliquam ac tortor lectus. Etiam consectetur arcu ac ligula faucibus volutpat. Integer enim sapien, consectetur nec purus eget, tincidunt bibendum nisl. Duis consectetur diam metus, quis tempor metus ornare sit amet. Proin vel nulla at felis varius laoreet nec vel leo. Mauris facilisis dui pellentesque elit gravida, sit amet volutpat est mattis. Nam id justo sed arcu cursus iaculis mollis eu neque. Suspendisse congue laoreet dui sit amet viverra. Morbi arcu est, auctor commodo egestas ut, commodo in nisi. Sed eget ante consequat, ullamcorper lorem vitae, lacinia ante. Sed vehicula tincidunt accumsan. Nam in interdum dolor. Donec vitae aliquet risus. <br/>
-                <p>Quisque nec lorem non mi sollicitudin elementum. Etiam eget lacus ut dui finibus ornare sodales sit amet eros. In venenatis urna at mauris hendrerit, at finibus tellus ultricies. Vestibulum aliquam ex lorem, nec finibus nunc aliquet id. Sed mollis posuere eros, vitae pulvinar quam tristique ac. Vivamus eget condimentum sapien. Donec rhoncus urna arcu, eu ultrices mi elementum sit amet. Integer vel turpis egestas, congue quam nec, iaculis orci. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. <br/>
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="product-content-right">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="product-images">
+                                <?php
+                                    $con=mysqli_connect("localhost", "root", "root", "tiendavirtual");
+                                    if(mysqli_connect_errno()){
+                                        echo "Conexión fallida: ".mysqli_connect_error();
+                                    }else{
+                                        $id=$_GET["id"];
+                                        $sql = "select * from categorias where id=$id";
+                                        $res=mysqli_query($con,$sql);
+                                        while($row=mysqli_fetch_array($res)){ ?>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <form method="post" action="actualizarcategoria.php">
+                                <div class="product-inner">
+                                    <input type="hidden" name="id" value="<?php echo $_GET["id"]; ?>"> <br/> <br/>
+                                    <h3> Nombre: </h3>
+                                    <input type="text" name="nombre" maxlength="50" value="<?php echo $row["nombre"];?>" size="60">
+                                </div>
+                                    <br/> <br/>
+                                    <button class="add_to_cart_button" type="submit">Actualizar</button>
+                               </form>
+                            </div>
+                        </div>          
+                               <?php }
+                                } 
+                        mysqli_close($con); ?>
+                    </div>
                 </div>
             </div>
         </div>
-
+    </div>
     <!-- Latest jQuery form server -->
     <script src="https://code.jquery.com/jquery.min.js"></script>
     

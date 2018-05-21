@@ -1,11 +1,11 @@
-<?php session_start();   ?>
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MiTienda - Iniciar sesión </title>
+    <title>MiTienda - Producto</title>
     
     <!-- Google Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
@@ -31,73 +31,6 @@
     <![endif]-->
   </head>
   <body>
-       <?php
-        $usr = $pass = "";
-        $err = "";
-        function test_input($data){
-            $data = trim($data);
-            $data = stripslashes($data);
-            $data = htmlspecialchars($data);
-            return $data;
-        }
-        if($_SERVER["REQUEST_METHOD"]=="POST"){
-            if(empty($_POST["usuario"])){
-                $err="Usuario vacío";
-            }else{
-                $usr=test_input($_POST["usuario"]);
-                $con=mysqli_connect("localhost", "root", "root", "tiendavirtual");
-                if(mysqli_connect_errno()){
-                    echo "Conexión fallida: ".mysqli_connect_error();
-                }else{
-                    $sql1="select usuario from usuarios where usuario = '$usr'";
-                    $res1=mysqli_query($con,$sql1);
-                    if($rowa = mysqli_fetch_array($res1)){
-                        if(empty($_POST["pwd"])){
-                            $err="Contraseña vacia";
-                        }else{
-                            $pass=test_input($_POST["pwd"]);
-                            $sql2="select usuario, password from usuarios where usuario ='$usr' and password ='$pass'";
-                            $res2 = mysqli_query($con,$sql2);
-                            if($rowb = mysqli_fetch_array($res2)){ 
-                                    $_SESSION["usuario"]=$usr;
-                                    $_SESSION["pwd"]=$pass;
-                                    header("Location:tienda.php?busqueda=");
-                            }else{
-                                $err="Contraseña incorrecta";
-                            }
-                        }    
-                    }else{
-                        $sql2="select usuario from administradores where usuario = '$usr'";
-                        $res2=mysqli_query($con,$sql2);
-                        if($rowa = mysqli_fetch_array($res2)){
-                            if(empty($_POST["pwd"])){
-                                $err="Contraseña vacia";
-                            }else{
-                                $pass=test_input($_POST["pwd"]);
-                                $sql3="select usuario, password from administradores where usuario ='$usr' and password ='$pass'";
-                                $res3 = mysqli_query($con,$sql3);
-                                if($rowb = mysqli_fetch_array($res3)){ 
-                                    $_SESSION["usuario"]=$usr;
-                                    $_SESSION["pwd"]=$pass;
-
-                                    header("Location: productos.php");
-                        ?>
-                                    <!--script type="text/javascript">
-                                        window.location.href = 'productos.php';
-                                    </script-->
-                                <?php
-                                }else{
-                                    $err="Contraseña incorrecta";
-                                }
-                            }    
-                        }else{
-                            $err="Usuario no encotrado";
-                        }
-                    }
-                }
-            }
-        }
-      ?>
     <div class="site-branding-area">
         <div class="container">
             <div class="row">
@@ -109,13 +42,13 @@
                 
                 <div class="col-sm-6">
                     <div class="shopping-item">
-                        <a href="usuario.php"><span class="cart-amunt"> 
+                        <a href="usuario.php"><span class="cart-amunt">
                          <?php
                             if(isset($_SESSION["usuario"])){
                                 echo $_SESSION['usuario'];
                             }
                             else{
-                                echo "No existe";
+                                header("Location:ingresar.php");
                             }
                             ?>
                         </span></a>
@@ -139,9 +72,9 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="inicio.html">Inicio</a></li>
-                        <li><a href="tienda.php?busqueda=&categoria=0&marca=0">Tienda</a></li>
+                        <li class="active"><a href="tienda.php?busqueda=&categoria=0&marca=0">Tienda</a></li>
                         <li><a href="carrito.php">Carrito</a></li>
-                        <li class="active"><a href="ingresar.php">Ingresar</a></li>
+                        <li><a href="ingresar.php">Ingresar</a></li>
                         <li><a href="registro.php">Registrarse</a></li>
                         <li><a href="contacto.html">Contacto</a></li>
                     </ul>
@@ -155,31 +88,72 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="product-bit-title text-center">
-                        <h2>Ingresar</h2>
+                        <h2>Producto</h2>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    
     <div class="single-product-area">
         <div class="zigzag-bottom"></div>
         <div class="container">
             <div class="row">
-                <div class="col-md-3 col-sm-6">
-                    <div class="single-shop-product">
-                        <form style="padding-left: 25%;" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
-                            <div> <?php echo $err;?> </div>
-                            <h2>Usuario</h2>
-                            <input type="text" name="usuario" maxlength="30" value="<?php echo $usr ?>">
-                            <h2>Contraseña</h2>
-                            <input type="password" name="pwd" maxlength="40"> <br/><br/>
-                            <input class="add_to_cart_button" style="padding: 10px 19.5%;" type="submit" value="INGRESAR"> <br/><br/>
-                        </form>
+                <div class="col-md-10">
+                    <div class="product-content-right">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="product-images">
+                                <?php
+                                    $con=mysqli_connect("localhost", "root", "root", "tiendavirtual");
+                                    if(mysqli_connect_errno()){
+                                        echo "Conexión fallida: ".mysqli_connect_error();
+                                    }else{
+                                        $id=$_GET["id"];
+                                        $sql = "select * from productos where id=$id";
+                                         $res=mysqli_query($con,$sql);
+                                         while($row=mysqli_fetch_array($res)){ ?>
+                                    <div class="product-main-img">
+                                        <img src="img/producto<?php echo $row["id"]; ?>.jpg" style="height:400px" alt="<?php echo $row["nombre"]; ?>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="product-inner">
+                                    <h2 class="product-name"><?php echo $row["nombre"];?></h2>
+                                    <div class="product-inner-category">
+                                        <p>Cantidad: <?php echo $row["cantidad"];?></p>
+                                    </div> 
+                                    <div class="product-inner-price">
+                                        <ins><?php echo $row["precio"];?></ins>
+                                    </div>    
+                                    <form action="agregar.php" class="cart" method="post">
+                                        <div class="quantity">
+                                            <input type="hidden" name="producto" value="<?php echo $id;?>">
+                                            <input type="number" size="4" class="input-text qty text" name="cantidad" min="1" value="1" step="1" max="<?php echo $row["cantidad"];?>">
+                                        </div>
+                                        <button class="add_to_cart_button" type="submit">Agregar</button>
+                                    </form>   
+                                    <div role="tabpanel">
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane fade in active" id="home">
+                                                <h2>Descripción</h2>  
+                                                <p><?php echo $row["descripcion"];?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>          
+                                   <?php }
+                                    } 
+                            mysqli_close($con); ?>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-      </div>
+    </div>
     <!-- Latest jQuery form server -->
     <script src="https://code.jquery.com/jquery.min.js"></script>
     
@@ -195,5 +169,5 @@
     
     <!-- Main Script -->
     <script src="js/main.js"></script>
-</body>
+  </body>
 </html>

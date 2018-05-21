@@ -38,12 +38,6 @@
                         <h1><a href="inicio.html">Mi<span>Tienda</span></a></h1>
                     </div>
                 </div>
-                
-                <div class="col-sm-6">
-                    <div class="shopping-item">
-                        <a href="cart.html"><span class="cart-amunt"> Carrito </span> <i class="fa fa-shopping-cart"></i></a>
-                    </div>
-                </div>
             </div>
         </div>
     </div> <!-- End site branding area -->
@@ -62,8 +56,8 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="inicio.html">Inicio</a></li>
-                        <li><a href="tienda.php">Tienda</a></li>
-                        <li><a href="carrito.html">Carrito</a></li>
+                        <li><a href="tienda.php?busqueda=&categoria=0&marca=0">Tienda</a></li>
+                        <li><a href="carrito.php">Carrito</a></li>
                         <li><a href="ingresar.php">Ingresar</a></li>
                         <li class="active"><a href="registro.php">Registrarse</a></li>
                         <li><a href="contacto.html">Contacto</a></li>
@@ -154,7 +148,7 @@
             $data = stripslashes($data);
             $data = htmlspecialchars($data);
             return $data;
-    }
+      }
     ?>
     <div class="single-product-area">
         <div class="zigzag-bottom"></div>
@@ -201,15 +195,13 @@
                     echo "Conexión fallida: ".mysqli_connect_error();
                 }else{
                     $sql = "INSERT INTO usuarios (nombre,apellido,usuario,password,correo) VALUES ('$nombre','$apellido','$usuario','$pass1','$correo')";
-                    if(mysqli_query($con,$sql)){ ?>
-                        <script type="text/javascript">
-                            window.location.href = 'tienda.php';
-                        </script>
-                    <?php
+                    if(mysqli_query($con,$sql)){ 
+                        header("Location:ingresar.php");
                     }else{
                         die("Error al registrar: ".mysqli_error($con));
                     }   
                 }
+                mysqli_close($con);
             }
         }
       ?>

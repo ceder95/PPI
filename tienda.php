@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -41,7 +42,16 @@
                 
                 <div class="col-sm-6">
                     <div class="shopping-item">
-                        <a href="cart.html"><span class="cart-amunt"> Carrito </span> <i class="fa fa-shopping-cart"></i></a>
+                        <a href="usuario.php"><span class="cart-amunt">
+                            <?php
+                            if(isset($_SESSION["usuario"])){
+                                echo $_SESSION['usuario'];
+                            }
+                            else{
+                                header("Location:ingresar.php");
+                            }
+                            ?>
+                        </span></a>
                     </div>
                 </div>
             </div>
@@ -62,7 +72,7 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="inicio.html">Inicio</a></li>
-                        <li class="active"><a href="tienda.php">Tienda</a></li>
+                        <li class="active"><a href="tienda.php?busqueda=&categoria=0&marca=0">Tienda</a></li>
                         <li><a href="carrito.html">Carrito</a></li>
                         <li><a href="ingresar.php">Ingresar</a></li>
                         <li><a href="registro.php">Registrarse</a></li>
@@ -72,36 +82,30 @@
             </div>
         </div>
     </div> <!-- End mainmenu area -->
-    
     <div class="product-big-title-area">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <div class="product-bit-title text-center">
                         <h2>Tienda</h2>
-                         <form action="tienda.php" method="get" style="padding-bottom: 25px;">
-                            <input type="text" name="busqueda" size="60"> &nbsp; &nbsp;
+                         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" style="padding-bottom: 25px;">
+                            <input type="text" name="busqueda" size="70" value=" "> &nbsp; &nbsp;
                             <select name="categoria" style="height: 43px">
                                <option value="0">Todas</option>
                                 <?php
-                                    $categoria=0;
-                                    $marca=0;
-                                    $palabra="";
                                     $con=mysqli_connect("localhost", "root", "root", "tiendavirtual");
                                     if(mysqli_connect_errno()){
                                         echo "Conexión fallida: ".mysqli_connect_error();
                                     }else{
-                                        if($_SERVER["REQUEST_METHOD"]=="GET"){
-                                            $palabra = test_input($_GET["busqueda"]);
-                                            $categoria = $_GET["categoria"];
-                                            $marca = $_GET["marca"];
-                                        }
-                                    $sql="select * from categorias";
-                                    $res=mysqli_query($con,$sql);
-                                    while($row=mysqli_fetch_array($res)){ ?>
+                                        $palabra = test_input($_GET["busqueda"]);
+                                        $categoria = $_GET["categoria"];
+                                        $marca = $_GET["marca"];
+                                        $sql="select * from categorias";
+                                        $res=mysqli_query($con,$sql);
+                                        while($row=mysqli_fetch_array($res)){ ?>
                                         <option <?php if($row["id"]==$categoria){echo "selected";} ?>
                                          value="<?php echo $row["id"]; ?>"><?php echo $row["nombre"];?></option>
-                                    <?php
+                                        <?php
                                     }
                                 }
                             mysqli_close($con);
@@ -146,18 +150,17 @@
                     if(mysqli_connect_errno()){
                         echo "Conexión fallida: ".mysqli_connect_error();
                     }else{
-                        if($_SERVER["REQUEST_METHOD"]=="GET"){
-                            if($categoria>0 && $marca>0){
-                                $sql = "select * from productos where descripcion like '%$palabra%' or nombre like '%$palabra%' and 'categoria'=$categoria and 'marca'=$marca";
-                            }else if($categoria>0){
-                                $sql = "select * from productos where descripcion like '%$palabra%' or nombre like '%$palabra%' and categoria=$categoria";
-                            }else if($marca>0){
-                                $sql = "select * from productos where descripcion like '%$palabra%' or nombre like '%$palabra%' and marca=$marca";
-                            }else{ 
-                                $sql = "select * from productos where descripcion like '%$palabra%' or nombre like '%$palabra%'";
-                            }
-                        }else{
-                            $sql = "select * from productos";
+                        $palabra=test_input($_GET["busqueda"]);
+                        $categoria=$_GET["categoria"];
+                        $marca=$_GET["marca"];
+                        if($categoria>0 && $marca>0){
+                            $sql = "select * from productos where descripcion like '%$palabra%' or nombre like '%$palabra%' and 'categoria'=$categoria and 'marca'=$marca";
+                        }else if($categoria>0){
+                            $sql = "select * from productos where descripcion like '%$palabra%' or nombre like '%$palabra%' and categoria=$categoria";
+                        }else if($marca>0){
+                            $sql = "select * from productos where descripcion like '%$palabra%' or nombre like '%$palabra%' and marca=$marca";
+                        }else{ 
+                            $sql = "select * from productos where descripcion like '%$palabra%' or nombre like '%$palabra%'";
                         }
                         $res=mysqli_query($con,$sql);
                         while($row=mysqli_fetch_array($res)){ ?>
@@ -166,13 +169,13 @@
                                 <div class="product-upper">
                                     <img style="height:130px;" src="img/producto<?php echo $row["id"]; ?>.jpg" alt="<?php echo $row["nombre"]; ?>">
                                 </div>
-                                <h2><a href=""> <?php echo $row["nombre"];?></a></h2>
+                                <h2><a href="producto.php?id=<?php echo $row["id"]; ?>"> <?php echo $row["nombre"];?></a></h2>
                                 <div class="product-carousel-price">
                                     <ins>Cantidad: <?php echo $row["cantidad"];?></ins> <br/>
                                     <ins><?php echo $row["precio"]; ?></ins>
                                 </div>
                                 <div class="product-option-shop">
-                                <a class="add_to_cart_button" href="">Detalles</a>
+                                <a class="add_to_cart_button" href="producto.php?id=<?php echo $row["id"]; ?>">Detalles</a>
                                 </div>   
                             </div>
                         </div>                
