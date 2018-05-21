@@ -73,7 +73,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href="inicio.html">Inicio</a></li>
                         <li class="active"><a href="tienda.php?busqueda=&categoria=0&marca=0">Tienda</a></li>
-                        <li><a href="carrito.html">Carrito</a></li>
+                        <li><a href="carrito.php">Carrito</a></li>
                         <li><a href="ingresar.php">Ingresar</a></li>
                         <li><a href="registro.php">Registrarse</a></li>
                         <li><a href="contacto.html">Contacto</a></li>

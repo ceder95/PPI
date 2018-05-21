@@ -104,14 +104,14 @@
                 <div class="col-md-10"> 
                     <div class="product-content-right">
                         <div class="woocommerce">
-                            <form method="post" action="#">
+                            <form method="post" action="comprar.php">
                                 <table cellspacing="0" class="shop_table cart">
                                     <thead>
                                         <tr>
                                             <th class="product-remove">&nbsp;</th>
                                             <th class="product-thumbnail">&nbsp;</th>
                                             <th class="product-name">Producto</th>
-                                            <th class="product-price">Precio</th>
+                                            <th class="product-name">Precio</th>
                                             <th class="product-quantity">Cantidad</th>
                                             <th class="product-subtotal">Total</th>
                                         </tr>
@@ -122,44 +122,37 @@
                                         if(mysqli_connect_errno()){
                                             echo "Conexión fallida: ".mysqli_connect_error();
                                         }else{
-                                            $con=mysqli_connect("localhost", "root", "root", "tiendavirtual");
-                                            if(mysqli_connect_errno()){
-                                                echo "Conexión fallida: ".mysqli_connect_error();
-                                            }else{
-                                                $sql="select * from carrito";
-                                                $res=mysqli_query($con,$sql);
-                                                while($row=mysqli_fetch_array($res)){ ?>
+                                            $sql="SELECT usuarios.id, carrito.producto, productos.nombre, carrito.cantidad, productos.precio FROM carrito, usuarios, productos WHERE usuarios.usuario='$usr' and usuarios.id=carrito.usuario and productos.id=carrito.producto";
+                                            $res=mysqli_query($con,$sql);
+                                            while($row=mysqli_fetch_array($res)){ ?>
                                             <tr class="cart_item">
                                                 <td class="product-remove">
                                                     <a title="Remove this item" class="remove" href="#">×</a> 
                                                 </td>
                                                 <td class="product-thumbnail">
-                                                    <a href="single-product.html"><img width="145" height="145" alt="<?php echo $row["nombre"];?>" class="shop_thumbnail" src="img/producto<?php echo $row[1];?>.jpg"></a>
+                                                    <a href="single-product.html"><img width="145" height="145" alt="<?php echo $row[1];?>" class="shop_thumbnail" src="img/producto<?php echo $row[1];?>.jpg"></a>
                                                 </td>
                                             <td class="product-name">
                                                 <a href="producto.php?id=<?php echo $row[1];?>"><?php echo $row[2];?></a> 
                                             </td>
-
-                                            <td class="product-price">
-                                                <span class="amount">£15.00</span> 
+                                            <td class="product-name">
+                                                <a href="producto.php?id=<?php echo $row[1];?>"><?php echo $row[4];?></a> 
                                             </td>
-
                                             <td class="product-quantity">
                                                 <div class="quantity buttons_added">
-                                                    <input type="button" class="minus" value="-">
-                                                    <input type="number" size="4" class="input-text qty text" name="cantidad" value="<?php echo $row["cantidad"];?>" min="1" step="1">
-                                                    <input type="button" class="plus" value="+">
+                                                    <input type="number" size="4" class="input-text qty text" name="cantidad" value="<?php echo $row[3];?>" min="1" step="1">
                                                 </div>
                                             </td>
 
                                             <td class="product-subtotal">
-                                                <span class="amount">£15.00</span> 
+                                                <span class="amount"></span> 
                                             </td>
                                         </tr>
                                         <?php   }
                                         }
                                         mysqli_close($con);
                                         ?>
+                                        
                                         <tr>
                                             <td class="product-thumbnail" colspan="4">&nbsp;</td>
                                             <td class="actions" colspan="6">
