@@ -1,4 +1,8 @@
-<?php session_start();   ?>
+<?php session_start();
+if(isset($_SESSION['usuario'])){
+    header('Location: tienda.php?busqueda=&categoria=0&marca=0');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -79,13 +83,7 @@
                                 if($rowb = mysqli_fetch_array($res3)){ 
                                     $_SESSION["usuario"]=$usr;
                                     $_SESSION["pwd"]=$pass;
-
                                     header("Location: productos.php");
-                        ?>
-                                    <!--script type="text/javascript">
-                                        window.location.href = 'productos.php';
-                                    </script-->
-                                <?php
                                 }else{
                                     $err="Contraseña incorrecta";
                                 }
@@ -170,9 +168,9 @@
                         <form style="padding-left: 25%;" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
                             <div> <?php echo $err;?> </div>
                             <h2>Usuario</h2>
-                            <input type="text" name="usuario" maxlength="30" value="<?php echo $usr ?>">
+                            <input type="text" name="usuario" size="50" maxlength="30" value="<?php echo $usr ?>">
                             <h2>Contraseña</h2>
-                            <input type="password" name="pwd" maxlength="40"> <br/><br/>
+                            <input type="password" name="pwd" size="50" maxlength="40"> <br/><br/>
                             <input class="add_to_cart_button" style="padding: 10px 19.5%;" type="submit" value="INGRESAR"> <br/><br/>
                         </form>
                     </div>

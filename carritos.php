@@ -1,11 +1,11 @@
-<?php session_start(); ?>
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MiTienda - Marcas </title>
+    <title> MiTienda - Carritos </title>
     
     <!-- Google Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
@@ -30,7 +30,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body>       
+  <body>    
     <div class="site-branding-area">
         <div class="container">
             <div class="row">
@@ -42,15 +42,15 @@
                 
                 <div class="col-sm-6">
                     <div class="shopping-item">
-                        <a href="usuario.php"><span class="cart-amunt">
-                            <?php 
-                            if(isset($_SESSION)){
+                        <a href="usuario.php"><span class="cart-amunt"> 
+                         <?php
+                            if(isset($_SESSION["usuario"])){
                                 echo $_SESSION['usuario'];
                             }
                             else{
                                 header("Location:ingresar.php");
                             }
-                            ?>
+                        ?>
                         </span></a>
                     </div>
                 </div>
@@ -70,80 +70,81 @@
                     </button>
                 </div> 
                 <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
+                   <ul class="nav navbar-nav">
                         <li><a href="inicio.html">Inicio</a></li>
                         <li><a href="productos.php">Tienda</a></li>
                         <li><a href="compras.php">Compras</a></li>
-                        <li><a href="carritos.php">Carritos</a></li>
-                        <li  class="active"><a href="marcas.php">Marcas</a></li>
+                        <li class="active"><a href="carritos.php">Carritos</a></li>
+                        <li ><a href="marcas.php">Marcas</a></li>
                         <li><a href="categorias.php">Categorias</a></li>
                     </ul>
                 </div>  
             </div>
         </div>
     </div> <!-- End mainmenu area -->
+    
     <div class="product-big-title-area">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <div class="product-bit-title text-center">
-                        <h2>Marcas</h2>
-                    </div>
-                    <div class="product-option-shop" style="margin-top:0px; margin-left:5%; font-size:18px; font-weight:520;">
-                        <a class="add_to_cart_button" href="nuevamarca.php">Nueva</a>
+                        <h2>Carritos</h2>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div> <!-- End Page title area -->
+    
+    
     <div class="single-product-area">
         <div class="zigzag-bottom"></div>
         <div class="container">
-            <div class="row">
-                   <div class="col-md-10"> 
+            <div class="row">                
+                <div class="col-md-10">
                     <div class="product-content-right">
                         <div class="woocommerce">
                             <table cellspacing="0" class="shop_table cart">
                                 <thead>
                                     <tr>
-                                        <th class="product-remove">&nbsp;</th>
-                                        <th class="product-name">Id</th>
-                                        <th class="product-name">Nombre</th>
+                                        <th class="product-thumbnail">Usuario</th>
+                                        <th class="product-name">Producto</th>
+                                        <th class="product-price">Cantidad</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 <?php
-                                    $con=mysqli_connect("localhost", "root", "root", "tiendavirtual");
-                                    if(mysqli_connect_errno()){
-                                        echo "Conexión fallida: ".mysqli_connect_error();
-                                    }else{
-                                        $sql = "select * from marcas";
-                                        $res=mysqli_query($con,$sql);
-                                        while($row=mysqli_fetch_array($res)){ ?>
+                                $con=mysqli_connect("localhost", "root", "root", "tiendavirtual");
+                                if(mysqli_connect_errno()){
+                                    echo "Conexión fallida: ".mysqli_connect_error();
+                                }else{
+                                    $sql="select usuarios.usuario, productos.nombre, carrito.cantidad FROM carrito, usuarios, productos where usuarios.id=carrito.usuario and productos.id=carrito.producto order by usuarios.usuario";
+                                    $res=mysqli_query($con,$sql);
+                                    while($row=mysqli_fetch_array($res)){ ?>
                                         <tr class="cart_item">
-                                            <td>
-                                                <div class="product-option-shop" style="margin-top:0px; margin-left:5%;">
-                                                    <a class="add_to_cart_button" href="modificarmarca.php?id=<?php echo $row["id"];?>">Modificar</a>
-                                                </div>
-                                            </td>
                                             <td class="product-name">
-                                                <h3><?php echo $row["id"] ?></h3>
+                                                <a href=""><?php echo $row[0];?></a> 
                                             </td>
-                                            <td class="product-name">
-                                                <h3><?php echo $row["nombre"]; ?> </h3> 
+                                            <td class="product-price">
+                                                <span class="prduct-name"><?php echo $row[1];?></span> 
+                                            </td>
+                                            <td class="product-quantity">
+                                                <span class="amount"><?php echo $row[2];?></span>
                                             </td>
                                         </tr>
-                                  <?php }
-                                    } 
-                                mysqli_close($con);?>
+                                    <?php
+                                    }
+                                }
+                                mysqli_close($con);
+                              ?>
                                     </tbody>
-                                </table>
+                                </table>                            
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>      
         </div>
-    </div>
+      </div>
+         
     <!-- Latest jQuery form server -->
     <script src="https://code.jquery.com/jquery.min.js"></script>
     

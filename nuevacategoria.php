@@ -74,9 +74,9 @@
                         <li><a href="inicio.html">Inicio</a></li>
                         <li><a href="productos.php">Tienda</a></li>
                         <li><a href="compras.php">Compras</a></li>
-                        <li class="active"><a href="marcas.php">Marcas</a></li>
-                        <li><a href="categorias.php">Categorias</a></li>
-                        <li><a href="contacto.html">Contacto</a></li>
+                        <li><a href="carritos.php">Carritos</a></li>
+                        <li><a href="marcas.php">Marcas</a></li>
+                        <li class="active"><a href="categorias.php">Categorias</a></li>
                     </ul>
                 </div>  
             </div>

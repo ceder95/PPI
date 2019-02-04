@@ -122,15 +122,16 @@
                                         if(mysqli_connect_errno()){
                                             echo "Conexión fallida: ".mysqli_connect_error();
                                         }else{
-                                            $sql="SELECT usuarios.id, carrito.producto, productos.nombre, carrito.cantidad, productos.precio FROM carrito, usuarios, productos WHERE usuarios.usuario='$usr' and usuarios.id=carrito.usuario and productos.id=carrito.producto";
+                                            $sql="SELECT usuarios.id, carrito.producto, productos.nombre, carrito.cantidad, productos.precio, carrito.id FROM carrito, usuarios, productos WHERE usuarios.usuario='$usr' and usuarios.id=carrito.usuario and productos.id=carrito.producto";
                                             $res=mysqli_query($con,$sql);
+                                            $total=0;
                                             while($row=mysqli_fetch_array($res)){ ?>
                                             <tr class="cart_item">
                                                 <td class="product-remove">
-                                                    <a title="Remove this item" class="remove" href="#">×</a> 
+                                                    <a title="Remove this item" class="remove" href="borrar.php?id=<?php echo $row[5];?>">X</a> 
                                                 </td>
                                                 <td class="product-thumbnail">
-                                                    <a href="single-product.html"><img width="145" height="145" alt="<?php echo $row[1];?>" class="shop_thumbnail" src="img/producto<?php echo $row[1];?>.jpg"></a>
+                                                    <a href="producto.php?id=<?php echo $row[1];?>"><img width="145" height="145" alt="<?php echo $row[1];?>" class="shop_thumbnail" src="img/producto<?php echo $row[1];?>.jpg"></a>
                                                 </td>
                                             <td class="product-name">
                                                 <a href="producto.php?id=<?php echo $row[1];?>"><?php echo $row[2];?></a> 
@@ -144,8 +145,14 @@
                                                 </div>
                                             </td>
 
-                                            <td class="product-subtotal">
-                                                <span class="amount"></span> 
+                                            <td class="product-name">
+                                                <span>
+                                                <?php
+                                                    $precio = intval($row[3])*intval(str_replace("$","",$row[4]));
+                                                    $total+=$precio;
+                                                    echo " $".$precio;
+                                                ?>
+                                                 </span> 
                                             </td>
                                         </tr>
                                         <?php   }
@@ -163,8 +170,8 @@
                                     </tbody>
                                 </table>
                             </form>
-                            <div class="cart_totals alignright" style="padding-left:25%;">
-                                <h2>Total: &nbsp; <?php $total=0; echo $total ?></h2>
+                            <div class="cart_totals" style="padding-left:18%;">
+                                <h2>Total: <?php echo "$".$total ?></h2>
                             </div>
                         </div>
                     </div>

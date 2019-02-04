@@ -133,7 +133,11 @@
                                             <input type="hidden" name="producto" value="<?php echo $id;?>">
                                             <input type="number" size="4" class="input-text qty text" name="cantidad" min="1" value="1" step="1" max="<?php echo $row["cantidad"];?>">
                                         </div>
+                                        <?php if($row["cantidad"]==0){ ?>
+                                        <a class="add_to_cart_button" style="background-color: #222;color: #fff;text-decoration: none">Agotado </a>
+                                        <?php } else{ ?>
                                         <button class="add_to_cart_button" type="submit">Agregar</button>
+                                        <?php } ?>
                                     </form>   
                                     <div role="tabpanel">
                                         <div class="tab-content">

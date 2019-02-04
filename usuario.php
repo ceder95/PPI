@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> MiTienda - Carrito </title>
+    <title> MiTienda - <?php echo $_SESSION["usuario"];?> </title>
     
     <!-- Google Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
@@ -74,7 +74,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href="inicio.html">Inicio</a></li>
                         <li><a href="tienda.php?busqueda=&categoria=0&marca=0">Tienda</a></li>
-                        <li><a href="carrito.html">Carrito</a></li>
+                        <li><a href="carrito.php">Carrito</a></li>
                         <li><a href="ingresar.php">Ingresar</a></li>
                         <li><a href="registro.php">Registrarse</a></li>
                         <li><a href="contacto.html">Contacto</a></li>
@@ -108,22 +108,26 @@
                     <div class="product-content-right">
                         <div class="woocommerce">
                             <table cellspacing="0" class="shop_table cart">
-                                <thead>
-                                    <tr>
-                                        <th class="product-thumbnail">&nbsp;</th>
-                                        <th class="product-name">Producto</th>
-                                        <th class="product-price">Cantidad</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
                                 <?php
                                 $con=mysqli_connect("localhost", "root", "root", "tiendavirtual");
                                 if(mysqli_connect_errno()){
                                     echo "Conexión fallida: ".mysqli_connect_error();
-                                }else{
-                                    $sql="select productos.id, productos.nombre, compras.cantidad from compras, usuarios, productos where usuarios.id=compras.usuario and productos.id=compras.producto and usuarios.usuario='$usr'";
-                                    $res=mysqli_query($con,$sql);
-                                    while($row=mysqli_fetch_array($res)){ ?>
+                                }else{ 
+                                    $sql1="select usuario from usuarios where usuario = '$usr'";
+                                    $res1=mysqli_query($con,$sql1);
+                                    if($rowa = mysqli_fetch_array($res1)){ ?>
+                                       <thead>
+                                            <tr>
+                                                <th class="product-thumbnail">&nbsp;</th>
+                                                <th class="product-name">Producto</th>
+                                                <th class="product-price">Cantidad</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        $sql="select productos.id, productos.nombre, compras.cantidad from compras, usuarios, productos where usuarios.id=compras.usuario and productos.id=compras.producto and usuarios.usuario='$usr'";
+                                        $res=mysqli_query($con,$sql);
+                                        while($row=mysqli_fetch_array($res)){ ?>
                                         <tr class="cart_item">
                                             <td class="product-thumbnail">
                                                 <a href="producto.php?id=<?php echo $row[0];?>"><img width="145" height="145" alt="<?php echo $row[1]; ?>" class="shop_thumbnail" src="img/producto<?php echo $row[0];?>.jpg"></a>
@@ -135,14 +139,49 @@
                                                 <span><?php echo $row[2];?></span> 
                                             </td>
                                         </tr>
-                                    <?php
+                                        <?php }
+                                    }else{ ?>
+                                        <thead>
+                                            <tr>
+                                                <th class="product-thumbnail">&nbsp;</th>
+                                                <th class="product-name">Producto</th>
+                                                <th class="product-price">Cantidad</th>
+                                                <th class="product-name">Usuario</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        $sql="select productos.id, productos.nombre, compras.cantidad, usuarios.usuario from compras, usuarios, productos where usuarios.id=compras.usuario and productos.id=compras.producto";
+                                        $res=mysqli_query($con,$sql);
+                                        while($row=mysqli_fetch_array($res)){ ?>
+                                        <tr class="cart_item">
+                                            <td class="product-thumbnail">
+                                                <a href="producto.php?id=<?php echo $row[0];?>"><img width="145" height="145" alt="<?php echo $row[1]; ?>" class="shop_thumbnail" src="img/producto<?php echo $row[0];?>.jpg"></a>
+                                            </td>
+                                            <td class="product-name">
+                                                <a href="producto.php?id=<?php echo $row[0];?>"><?php echo $row[1];?></a> 
+                                            </td>
+                                            <td class="product-name">
+                                                <span><?php echo $row[2];?></span> 
+                                            </td>
+                                            <td class="product-name">
+                                                <span><?php echo $row[3];?></span> 
+                                            </td>
+                                        </tr>
+                                        <?php
+                                        } 
                                     }
                                 }
                                 mysqli_close($con);
-                              ?>
+                                ?>
                                     </tbody>
                                 </table>                            
                             </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
     <!-- Latest jQuery form server -->
     <script src="https://code.jquery.com/jquery.min.js"></script>
     

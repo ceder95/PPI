@@ -1,8 +1,8 @@
 <?php
+    session_start();
     if(isset($_SESSION)){
-    session_destroy();
-    $_SESSION["usuario"]=null;
-    $_SESSION["pass"]=null;
+        session_destroy();
+        unset($_SESSION);
+        header("Location:ingresar.php");
     }
-    header("Location:ingresar.php");
 ?>

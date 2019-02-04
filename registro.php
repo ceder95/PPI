@@ -1,3 +1,8 @@
+<?php session_start();
+if(isset($_SESSION['usuario'])){
+    header('Location: tienda.php?busqueda=&categoria=0&marca=0');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -159,26 +164,26 @@
                         <form style="margin-left: 25%;" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
                             <h2>Nombre</h2>
                             <div class="error">* <?php echo $nomErr."<br/>"; ?></div>
-                            <input type="text" name="nombre" maxlength="50" value="<?php echo $nombre; ?>">
+                            <input type="text" name="nombre" size="50" maxlength="50" value="<?php echo $nombre; ?>">
                             <br/> <br/>
                             <h2>Apellido</h2>
                             <div class="error">* <?php echo $apErr; ?></div>
-                            <input type="text" name="apellido" maxlength="50" value="<?php echo $apellido; ?>"> 
+                            <input type="text" name="apellido" size="50" maxlength="50" value="<?php echo $apellido; ?>"> 
                             <br/> <br/>
                             <h2>Usuario</h2>
                             <span class="error">* <?php echo $usrErr; ?></span><br/>
-                            <input type="text" name="usuario" autocomplete="off" maxlength="30" value="<?php echo $usuario; ?>"> 
+                            <input type="text" name="usuario" size="50" autocomplete="off" maxlength="30" value="<?php echo $usuario; ?>"> 
                             <br/> <br/>
                             <h2>Contraseña</h2>
                             <span class="error">* <?php echo $passErr; ?></span><br/>
-                            <input type="text" name="pwd1" autocomplete="off" maxlength="40" value="<?php echo $pass1; ?>"> 
+                            <input type="text" name="pwd1" size="50" autocomplete="off" maxlength="40" value="<?php echo $pass1; ?>"> 
                             <br/> <br/>
                             <h2>Repetir Contraseña</h2>
                             <span class="error">*</span><br/>
-                            <input type="text" name="pwd2" autocomplete="off" maxlength="40" value="<?php echo $pass2 ?>"> 
+                            <input type="text" name="pwd2" size="50" autocomplete="off" maxlength="40" value="<?php echo $pass2 ?>"> 
                             <h2>Correo</h2>
                             <span class="error">* <?php echo $correoErr; ?></span><br/>
-                            <input type="email" name="correo" autocomplete="off" maxlength="60" value="<?php echo $correo; ?>">
+                            <input type="email" name="correo" size="50" autocomplete="off" maxlength="60" value="<?php echo $correo; ?>">
                             <br/><br/>
                             <input class="add_to_cart_button" style="padding: 10px 18%;" type="submit" value="Registrar"> <br/><br/>
                         </form>

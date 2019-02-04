@@ -175,7 +175,11 @@
                                     <ins><?php echo $row["precio"]; ?></ins>
                                 </div>
                                 <div class="product-option-shop">
-                                <a class="add_to_cart_button" href="producto.php?id=<?php echo $row["id"]; ?>">Detalles</a>
+                                <?php if($row["cantidad"]==0){ ?>
+                                    <a class="add_to_cart_button" style="background-color: #222;color: #fff;text-decoration: none">Agotado </a>
+                                <?php } else{ ?>
+                                    <a class="add_to_cart_button" href="producto.php?id=<?php echo $row["id"]; ?>">Detalles</a>
+                                <?php } ?>
                                 </div>   
                             </div>
                         </div>                
