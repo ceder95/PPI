@@ -72,7 +72,7 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="inicio.html">Inicio</a></li>
-                        <li class="active"><a href="productos.php">Tienda</a></li>
+                        <li class="active"><a href="productos.php?busqueda=&categoria=0&marca=0">Tienda</a></li>
                         <li><a href="compras.php">Compras</a></li>
                         <li><a href="carritos.php">Carritos</a></li>
                         <li ><a href="marcas.php">Marcas</a></li>
@@ -88,8 +88,51 @@
                 <div class="col-md-12">
                     <div class="product-bit-title text-center">
                         <h2>Tienda</h2>
+                         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" style="padding-bottom:6px;">
+                           <?php $palabra=test_input($_GET["busqueda"]); ?>
+                            <input type="text" name="busqueda" size="70" value="<?php echo $palabra; ?> "> &nbsp; &nbsp;
+                            <select name="categoria" style="height: 43px">
+                               <option value="0">Todas</option>
+                                <?php
+                                    $con=mysqli_connect("localhost", "root", "root", "tiendavirtual");
+                                    if(mysqli_connect_errno()){
+                                        echo "Conexión fallida: ".mysqli_connect_error();
+                                    }else{
+                                        $palabra = test_input($_GET["busqueda"]);
+                                        $categoria = $_GET["categoria"];
+                                        $marca = $_GET["marca"];
+                                        $sql="select * from categorias";
+                                        $res=mysqli_query($con,$sql);
+                                        while($row=mysqli_fetch_array($res)){ ?>
+                                        <option <?php if($row["id"]==$categoria){echo "selected";} ?>
+                                         value="<?php echo $row["id"]; ?>"><?php echo $row["nombre"];?></option>
+                                        <?php
+                                    }
+                                }
+                            mysqli_close($con);
+                            ?>
+                            </select> &nbsp; &nbsp;
+                            <select name="marca" style="height: 43px">
+                               <option value="0">Todas</option>
+                                <?php 
+                                    $con=mysqli_connect("localhost", "root", "root", "tiendavirtual");
+                                    if(mysqli_connect_errno()){
+                                        echo "Conexión fallida: ".mysqli_connect_error();
+                                    }else{    
+                                    $sql="select * from marcas";
+                                    $res=mysqli_query($con,$sql);
+                                    while($row=mysqli_fetch_array($res)){ ?>
+                                        <option <?php if($row["id"]==$marca){echo "selected";} ?> value="<?php echo $row["id"]; ?>"> <?php echo $row["nombre"]; ?> </option>
+                                    <?php
+                                    }
+                                }
+                            mysqli_close($con);
+                            ?>
+                            </select> &nbsp; &nbsp;
+                            <input type="submit" value="Buscar">
+                        </form>
                     </div>
-                    <div class="product-option-shop" style="margin-top:0px; margin-left:5%; font-size:18px; font-weight:520;">
+                    <div class="product-option-shop" style="margin-top:-45px; margin-left:3%; padding-bottom:20px; font-size:18px; font-weight:520;">
                         <a class="add_to_cart_button" href="nuevoproducto.php">Nuevo</a>
                     </div>
                 </div>
@@ -101,11 +144,34 @@
         <div class="container">
             <div class="row">
                     <?php
+                    function test_input($data){
+                            $data = trim($data);
+                            $data = stripslashes($data);
+                            $data = htmlspecialchars($data);
+                            return $data;
+                    }
                     $con=mysqli_connect("localhost", "root", "root", "tiendavirtual");
                     if(mysqli_connect_errno()){
                         echo "Conexión fallida: ".mysqli_connect_error();
                     }else{
-                        $sql = "select * from productos";
+                        $palabra=test_input($_GET["busqueda"]);
+                        $categoria=$_GET["categoria"];
+                        $marca=$_GET["marca"];
+                        $sql="select * from productos where nombre like '%$palabra%'";
+                        if(intval($categoria)){
+                            $sql.=" and categoria=$categoria";
+                        }
+                        if(intval($marca)){
+                            $sql.=" and marca=$marca";
+                        }
+                        $sql.=" or descripcion like '%$palabra%'";
+                        if(intval($categoria)){
+                            $sql.=" and categoria=$categoria";
+                        }
+                        if(intval($marca)){
+                            $sql.=" and marca=$marca";
+                        }
+                        $res=mysqli_query($con,$sql);
                         $res=mysqli_query($con,$sql);
                         while($row=mysqli_fetch_array($res)){ ?>
                         <div class="col-md-3 col-sm-6" style="height:330px;">

@@ -6,7 +6,7 @@
     }else{
         $sql = "delete from productos where id=$id";
         if(mysqli_query($con,$sql)){ 
-            header("Location:productos.php");
+            header("Location:productos.php?busqueda=&categoria=0&marca=0");
         }else{
             die("Error al actualizar: ".mysqli_error($con));
         }   

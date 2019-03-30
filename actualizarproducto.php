@@ -13,7 +13,7 @@
         $sql = "update productos set nombre='$nombre', descripcion='$descripcion', precio='$precio', cantidad=$cantidad, marca=$marca, categoria=$categoria where id=$id";
         if(mysqli_query($con,$sql)){ ?>
                     <script type="text/javascript">
-                            window.location.href = 'productos.php';
+                            window.location.href = 'productos.php?busqueda=&categoria=0&marca=0';
                     </script>
                     <?php
         }else{

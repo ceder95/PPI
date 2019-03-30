@@ -112,8 +112,8 @@
                                     }else{
                                         $id=$_GET["id"];
                                         $sql = "select * from productos where id=$id";
-                                         $res=mysqli_query($con,$sql);
-                                         while($row=mysqli_fetch_array($res)){ ?>
+                                        $res=mysqli_query($con,$sql);
+                                        while($row=mysqli_fetch_array($res)){ ?>
                                     <div class="product-main-img">
                                         <img src="img/producto<?php echo $row["id"]; ?>.jpg" style="height:400px" alt="<?php echo $row["nombre"]; ?>">
                                     </div>

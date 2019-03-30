@@ -72,7 +72,7 @@
                 <div class="navbar-collapse collapse">
                      <ul class="nav navbar-nav">
                         <li><a href="inicio.html">Inicio</a></li>
-                        <li class="active"><a href="productos.php">Tienda</a></li>
+                        <li class="active"><a href="productos.php?busqueda=&categoria=0&marca=0">Tienda</a></li>
                         <li><a href="compras.php">Compras</a></li>
                         <li><a href="carritos.php">Carritos</a></li>
                         <li ><a href="marcas.php">Marcas</a></li>

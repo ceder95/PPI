@@ -89,7 +89,8 @@
                     <div class="product-bit-title text-center">
                         <h2>Tienda</h2>
                          <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" style="padding-bottom: 25px;">
-                            <input type="text" name="busqueda" size="70" value=" "> &nbsp; &nbsp;
+                           <?php $palabra=test_input($_GET["busqueda"]); ?>
+                            <input type="text" name="busqueda" size="70" value="<?php echo $palabra; ?> "> &nbsp; &nbsp;
                             <select name="categoria" style="height: 43px">
                                <option value="0">Todas</option>
                                 <?php
@@ -153,14 +154,19 @@
                         $palabra=test_input($_GET["busqueda"]);
                         $categoria=$_GET["categoria"];
                         $marca=$_GET["marca"];
-                        if($categoria>0 && $marca>0){
-                            $sql = "select * from productos where descripcion like '%$palabra%' or nombre like '%$palabra%' and 'categoria'=$categoria and 'marca'=$marca";
-                        }else if($categoria>0){
-                            $sql = "select * from productos where descripcion like '%$palabra%' or nombre like '%$palabra%' and categoria=$categoria";
-                        }else if($marca>0){
-                            $sql = "select * from productos where descripcion like '%$palabra%' or nombre like '%$palabra%' and marca=$marca";
-                        }else{ 
-                            $sql = "select * from productos where descripcion like '%$palabra%' or nombre like '%$palabra%'";
+                        $sql="select * from productos where nombre like '%$palabra%'";
+                        if(intval($categoria)){
+                            $sql.=" and categoria=$categoria";
+                        }
+                        if(intval($marca)){
+                            $sql.=" and marca=$marca";
+                        }
+                        $sql.=" or descripcion like '%$palabra%'";
+                        if(intval($categoria)){
+                            $sql.=" and categoria=$categoria";
+                        }
+                        if(intval($marca)){
+                            $sql.=" and marca=$marca";
                         }
                         $res=mysqli_query($con,$sql);
                         while($row=mysqli_fetch_array($res)){ ?>
@@ -175,7 +181,7 @@
                                     <ins><?php echo $row["precio"]; ?></ins>
                                 </div>
                                 <div class="product-option-shop">
-                                <?php if($row["cantidad"]==0){ ?>
+                                <?php if($row["cantidad"]<=0){ ?>
                                     <a class="add_to_cart_button" style="background-color: #222;color: #fff;text-decoration: none">Agotado </a>
                                 <?php } else{ ?>
                                     <a class="add_to_cart_button" href="producto.php?id=<?php echo $row["id"]; ?>">Detalles</a>
