@@ -10,9 +10,9 @@
                     while($row=mysqli_fetch_array($res)){
                         $sql1 = "insert into compras (cantidad, usuario, producto) values ($row[1],$row[2],$row[3])";
                         if(mysqli_query($con,$sql1)){
-                            $sql2 = "select cantidad from productos where id=$row[3]";
+                            $sql2 = "select id, cantidad from productos where id=$row[3]";
                             if(mysqli_query($con,$sql2)){
-                               $sql3="update productos set cantidad=cantidad-$row[0]";
+                               $sql3="update productos set cantidad=cantidad-$row[1] where id=$row[0]";
                                 if(!mysqli_query($con,$sql3)){
                                     die("Error al actualizar tienda: ".mysqli_error($con));
                                 }

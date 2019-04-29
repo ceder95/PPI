@@ -104,7 +104,7 @@
                 <div class="col-md-10"> 
                     <div class="product-content-right">
                         <div class="woocommerce">
-                            <form method="post" action="comprar.php">
+                            <form method="post" action="procesarcompra.php">
                                 <table cellspacing="0" class="shop_table cart">
                                     <thead>
                                         <tr>
@@ -122,7 +122,7 @@
                                         if(mysqli_connect_errno()){
                                             echo "Conexión fallida: ".mysqli_connect_error();
                                         }else{
-                                            $sql="SELECT usuarios.id, carrito.producto, productos.nombre, carrito.cantidad, productos.precio, carrito.id FROM carrito, usuarios, productos WHERE usuarios.usuario='$usr' and usuarios.id=carrito.usuario and productos.id=carrito.producto";
+                                            $sql="SELECT usuarios.id, carrito.producto, productos.nombre, carrito.cantidad, productos.precio, carrito.id, productos.cantidad FROM carrito, usuarios, productos WHERE usuarios.usuario='$usr' and usuarios.id=carrito.usuario and productos.id=carrito.producto";
                                             $res=mysqli_query($con,$sql);
                                             $total=0;
                                             while($row=mysqli_fetch_array($res)){ ?>
@@ -141,7 +141,7 @@
                                             </td>
                                             <td class="product-quantity">
                                                 <div class="quantity buttons_added">
-                                                    <input type="number" size="4" class="input-text qty text" name="cantidad" value="<?php echo $row[3];?>" min="1" step="1">
+                                                    <input type="number" size="4" class="input-text qty text" name="cantidad<?php echo $row[5];?>" value="<?php echo $row[3];?>" min="1" max="<?php echo $row[6];?>" step="1">
                                                 </div>
                                             </td>
 
@@ -163,7 +163,7 @@
                                         <tr>
                                             <td class="product-thumbnail" colspan="4">&nbsp;</td>
                                             <td class="actions" colspan="6">
-                                                <input type="submit" value="Actualizar" name="actualizar" class="button">                           &nbsp; &nbsp; &nbsp;
+                                                <input type="submit" value="Actualizar" name="comprar" class="button">                           &nbsp; &nbsp; &nbsp;
                                                 <input type="submit" value="Comprar" name="comprar" class="checkout-button button alt wc-forward">
                                             </td>
                                         </tr>
